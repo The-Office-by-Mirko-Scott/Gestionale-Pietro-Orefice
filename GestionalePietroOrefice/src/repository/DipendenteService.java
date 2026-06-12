@@ -1,66 +1,58 @@
 package repository;
 
-import java.util.ArrayList;
-import java.util.List; 
-import model.Dipendente;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+import model.Dipendente;
 
 public class DipendenteService {
 
-    ArrayList<Dipendente> dipendenti = new ArrayList<>();
+    private Map<Integer, Dipendente> persone = new HashMap<>();
 
-    public void inserisciDipendente(Dipendente dipendente) {
-        dipendenti.add(dipendente);
+    public void inserisciDipendente(Dipendente p) {
+        persone.put(p.getId(), p);
     }
 
     public List<Dipendente> leggi(){
-        return dipendenti;
+        return persone.values().stream().collect(Collectors.toList());
     }
     
-    // Ricerca
+    // ID (Cerca per matricola)
     public Dipendente cercaPerId(int id) {
-        for (Dipendente dipendente : dipendenti) {
-            if(dipendente.getId() == id) {
-                return dipendente;
-            }
-        }
-        return null;
+        Dipendente p = persone.get(id); 
+        return p;
     }
 
     // Eliminazione
     public boolean eliminaDipendente(int id) {
-        Dipendente trovato = cercaPerId(id);
-        if (trovato != null) {
-            dipendenti.remove(trovato);
-            return true; 
+        if (persone.containsKey(id)) {
+            persone.remove(id);
+            return true;
         }
-        return false; // Dipendente non trovato
+        return false;
     }
     
     // Modifica 
     public boolean modificaDipendente(int idVecchio, Dipendente dipendenteModificato) {
-        Dipendente vecchio = cercaPerId(idVecchio);
-        if (vecchio != null) {
-            int indice = dipendenti.indexOf(vecchio); // Trova la posizione (indice)
-            
-            dipendenti.set(indice, dipendenteModificato); // Sostituisce
+        if (persone.containsKey(idVecchio)) {
+            persone.put(idVecchio, dipendenteModificato);
             return true;
         }
-        return false; // Vecchio dipendente non trovato
+        return false;
     }
     
- // Ricerca per Nome
+    // Ricerca per Nome
     public List<Dipendente> cercaPerNome(String nomeDaCercare) {
-        return dipendenti.stream()
-                .filter(d -> d.getNome().equalsIgnoreCase(nomeDaCercare))
+        return persone.values().stream()
+                .filter(p -> p.getNome().equalsIgnoreCase(nomeDaCercare)) // Usiamo 'p' nel filtro
                 .collect(Collectors.toList());
     }
 
     // Ricerca per Cognome
     public List<Dipendente> cercaPerCognome(String cognomeDaCercare) {
-        return dipendenti.stream()
-                .filter(d -> d.getCognome().equalsIgnoreCase(cognomeDaCercare))
+        return persone.values().stream()
+                .filter(p -> p.getCognome().equalsIgnoreCase(cognomeDaCercare)) // Usiamo 'p' nel filtro
                 .collect(Collectors.toList());
-
-}
+    }
 }
