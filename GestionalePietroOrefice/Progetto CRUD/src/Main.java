@@ -1,6 +1,4 @@
 import java.util.Scanner;
-// Importa i modelli se si trovano in un altro package (es. model.Dipendente)
-import model.Persona;
 import model.Dipendente;
 import repository.DipendenteService;
 
@@ -12,7 +10,7 @@ public class Main {
         boolean inEsecuzione = true;
 
         while (inEsecuzione) {
-            System.out.println("\n=== MENU CRUD DIPENDENTI ===");
+            System.out.println("\n=== MENU DIPENDENTI ===");
             System.out.println("1. Inserisci Dipendente (Create)");
             System.out.println("2. Cerca per Matricola (Read)");
             System.out.println("3. Aggiorna Dipendente (Update)");
